@@ -1,0 +1,10 @@
+﻿@model pet_adoption_system.Models.Pet
+
+<div class="row mb-2">
+    <div class="col-10">
+        @Html.DropDownListFor(x => x.PetId, ViewBag.pets as SelectList, "--Select--", new { @class = "form-select form-select-sm mb-2", name = "PetId" })
+    </div>
+    <div class="col-2">
+        <a href="#" id="btnDelete" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+    </div>
+</div>

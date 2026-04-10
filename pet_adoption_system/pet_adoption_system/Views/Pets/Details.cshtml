@@ -1,0 +1,39 @@
+﻿@model pet_adoption_system.Models.Pet
+@{
+    ViewBag.Title = "Pet Details";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0 shadow-sm rounded-3">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0">Pet Details</h4>
+                </div>
+
+                <div class="card-body p-4">
+                    <dl class="row">
+                        <dt class="col-sm-4 fw-semibold text-muted">
+                            @Html.DisplayNameFor(model => model.PetName)
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Html.DisplayFor(model => model.PetName)
+                        </dd>
+
+                        <dt class="col-sm-4 fw-semibold text-muted mt-3">
+                            @Html.DisplayNameFor(model => model.AdoptionFee)
+                        </dt>
+                        <dd class="col-sm-8 mt-3">
+                            @Html.DisplayFor(model => model.AdoptionFee) BDT
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="card-footer bg-transparent border-0 text-center py-3">
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.PetId }, new { @class = "btn btn-primary rounded-pill px-4 me-2" })
+                    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-outline-secondary rounded-pill px-4" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

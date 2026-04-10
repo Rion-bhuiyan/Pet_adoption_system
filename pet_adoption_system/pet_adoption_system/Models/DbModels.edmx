@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PetAdoptionDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Adopters">
+          <Key>
+            <PropertyRef Name="AdopterId" />
+          </Key>
+          <Property Name="AdopterId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AdopterName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="BirthDate" Type="date" Nullable="false" />
+          <Property Name="Age" Type="int" Nullable="false" />
+          <Property Name="Picture" Type="nvarchar(max)" />
+          <Property Name="Maritalstatus" Type="bit" />
+        </EntityType>
+        <EntityType Name="AdoptionEntries">
+          <Key>
+            <PropertyRef Name="AdoptionEntryID" />
+          </Key>
+          <Property Name="AdoptionEntryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PetId" Type="int" Nullable="false" />
+          <Property Name="AdopterId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pets">
+          <Key>
+            <PropertyRef Name="PetId" />
+          </Key>
+          <Property Name="PetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PetName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AdoptionFee" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__AdoptionE__Adopt__52593CB8">
+          <End Role="Adopters" Type="Self.Adopters" Multiplicity="1" />
+          <End Role="AdoptionEntries" Type="Self.AdoptionEntries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adopters">
+              <PropertyRef Name="AdopterId" />
+            </Principal>
+            <Dependent Role="AdoptionEntries">
+              <PropertyRef Name="AdopterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AdoptionE__PetId__5165187F">
+          <End Role="Pets" Type="Self.Pets" Multiplicity="1" />
+          <End Role="AdoptionEntries" Type="Self.AdoptionEntries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pets">
+              <PropertyRef Name="PetId" />
+            </Principal>
+            <Dependent Role="AdoptionEntries">
+              <PropertyRef Name="PetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PetAdoptionDBModelStoreContainer">
+          <EntitySet Name="Adopters" EntityType="Self.Adopters" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AdoptionEntries" EntityType="Self.AdoptionEntries" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pets" EntityType="Self.Pets" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__AdoptionE__Adopt__52593CB8" Association="Self.FK__AdoptionE__Adopt__52593CB8">
+            <End Role="Adopters" EntitySet="Adopters" />
+            <End Role="AdoptionEntries" EntitySet="AdoptionEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AdoptionE__PetId__5165187F" Association="Self.FK__AdoptionE__PetId__5165187F">
+            <End Role="Pets" EntitySet="Pets" />
+            <End Role="AdoptionEntries" EntitySet="AdoptionEntries" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PetAdoptionDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Adopter">
+          <Key>
+            <PropertyRef Name="AdopterId" />
+          </Key>
+          <Property Name="AdopterId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdopterName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="Picture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Maritalstatus" Type="Boolean" />
+          <NavigationProperty Name="AdoptionEntries" Relationship="Self.FK__AdoptionE__Adopt__52593CB8" FromRole="Adopters" ToRole="AdoptionEntries" />
+        </EntityType>
+        <EntityType Name="AdoptionEntry">
+          <Key>
+            <PropertyRef Name="AdoptionEntryID" />
+          </Key>
+          <Property Name="AdoptionEntryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PetId" Type="Int32" Nullable="false" />
+          <Property Name="AdopterId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Adopter" Relationship="Self.FK__AdoptionE__Adopt__52593CB8" FromRole="AdoptionEntries" ToRole="Adopters" />
+          <NavigationProperty Name="Pet" Relationship="Self.FK__AdoptionE__PetId__5165187F" FromRole="AdoptionEntries" ToRole="Pets" />
+        </EntityType>
+        <EntityType Name="Pet">
+          <Key>
+            <PropertyRef Name="PetId" />
+          </Key>
+          <Property Name="PetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PetName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AdoptionFee" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <NavigationProperty Name="AdoptionEntries" Relationship="Self.FK__AdoptionE__PetId__5165187F" FromRole="Pets" ToRole="AdoptionEntries" />
+        </EntityType>
+        <Association Name="FK__AdoptionE__Adopt__52593CB8">
+          <End Role="Adopters" Type="Self.Adopter" Multiplicity="1" />
+          <End Role="AdoptionEntries" Type="Self.AdoptionEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adopters">
+              <PropertyRef Name="AdopterId" />
+            </Principal>
+            <Dependent Role="AdoptionEntries">
+              <PropertyRef Name="AdopterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__AdoptionE__PetId__5165187F">
+          <End Role="Pets" Type="Self.Pet" Multiplicity="1" />
+          <End Role="AdoptionEntries" Type="Self.AdoptionEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pets">
+              <PropertyRef Name="PetId" />
+            </Principal>
+            <Dependent Role="AdoptionEntries">
+              <PropertyRef Name="PetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PetAdoptionDbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Adopters" EntityType="Self.Adopter" />
+          <EntitySet Name="AdoptionEntries" EntityType="Self.AdoptionEntry" />
+          <EntitySet Name="Pets" EntityType="Self.Pet" />
+          <AssociationSet Name="FK__AdoptionE__Adopt__52593CB8" Association="Self.FK__AdoptionE__Adopt__52593CB8">
+            <End Role="Adopters" EntitySet="Adopters" />
+            <End Role="AdoptionEntries" EntitySet="AdoptionEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK__AdoptionE__PetId__5165187F" Association="Self.FK__AdoptionE__PetId__5165187F">
+            <End Role="Pets" EntitySet="Pets" />
+            <End Role="AdoptionEntries" EntitySet="AdoptionEntries" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PetAdoptionDBModelStoreContainer" CdmEntityContainer="PetAdoptionDbContext">
+          <EntitySetMapping Name="Adopters">
+            <EntityTypeMapping TypeName="PetAdoptionDBModel.Adopter">
+              <MappingFragment StoreEntitySet="Adopters">
+                <ScalarProperty Name="AdopterId" ColumnName="AdopterId" />
+                <ScalarProperty Name="AdopterName" ColumnName="AdopterName" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Picture" ColumnName="Picture" />
+                <ScalarProperty Name="Maritalstatus" ColumnName="Maritalstatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdoptionEntries">
+            <EntityTypeMapping TypeName="PetAdoptionDBModel.AdoptionEntry">
+              <MappingFragment StoreEntitySet="AdoptionEntries">
+                <ScalarProperty Name="AdoptionEntryID" ColumnName="AdoptionEntryID" />
+                <ScalarProperty Name="PetId" ColumnName="PetId" />
+                <ScalarProperty Name="AdopterId" ColumnName="AdopterId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pets">
+            <EntityTypeMapping TypeName="PetAdoptionDBModel.Pet">
+              <MappingFragment StoreEntitySet="Pets">
+                <ScalarProperty Name="PetId" ColumnName="PetId" />
+                <ScalarProperty Name="PetName" ColumnName="PetName" />
+                <ScalarProperty Name="AdoptionFee" ColumnName="AdoptionFee" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

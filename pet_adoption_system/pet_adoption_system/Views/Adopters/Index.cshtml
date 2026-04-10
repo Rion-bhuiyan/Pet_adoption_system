@@ -1,0 +1,86 @@
+﻿@model IEnumerable<pet_adoption_system.Models.Adopter>
+    @{
+        ViewBag.Title = "Index";
+    }
+<div class="container-fluid py-4 bg-white">
+    <div class="d-flex justify-content-between align-items-center mb-4 p-3 border border-2 border-dark shadow-sm">
+        <h2 class="text-dark fw-bold mb-0">Adopter List</h2>
+        <div class="mb-2">
+            @* Added mb-2 here as requested *@
+            <a href="@Url.Action("Create", "Adopters")" class="btn btn-dark btn-sm px-4 rounded-0 fw-bold border-2 border-dark">
+                + Add New Adopter
+            </a>
+        </div>
+    </div>
+
+    @foreach (var clnt in Model)
+    {
+        <div class="card mb-5 border border-2 border-dark rounded-0 shadow-sm overflow-hidden">
+
+            <div class="card-header bg-white border-bottom border-2 border-dark py-3">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        @if (!string.IsNullOrEmpty(clnt.Picture))
+                        {
+                            <img src="@clnt.Picture" width="65" height="65" class="border border-2 border-dark object-fit-cover shadow-sm" alt="Adopter" />
+                        }
+                    </div>
+                    <div class="col">
+                        <h4 class="text-primary fw-bold mb-1">@clnt.AdopterName</h4>
+                        <div class="text-dark small fw-bold text-uppercase">
+                            <span class="me-3">DOB: @clnt.BirthDate.ToShortDateString()</span>
+                            <span class="me-3">Age: @clnt.Age</span>
+                            <span>Status: @(clnt.Maritalstatus ? "Married" : "Single")</span>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="btn-group border border-2 border-dark rounded-0">
+                            <a class="btn btn-light btn-sm fw-bold px-3 rounded-0 border-end border-2 border-dark" href="@Url.Action("Edit", "Adopters", new { id = clnt.AdopterId })">EDIT</a>
+                            <a class="btn btn-danger btn-sm fw-bold px-3 rounded-0" href="@Url.Action("Delete", "Adopters", new { id = clnt.AdopterId })">DELETE</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover mb-0 border-dark align-middle">
+                        <thead class="table-info border-bottom border-2 border-dark">
+                            <tr>
+                                @* Added padding to make the table 20px larger *@
+                                <th class="ps-4 border-dark" style="padding-top: 20px; padding-bottom: 20px; width: 25%;">Pet ID</th>
+                                <th class="border-dark" style="padding-top: 20px; padding-bottom: 20px;">Adopted Pet Name</th>
+                                <th class="border-dark" style="padding-top: 20px; padding-bottom: 20px;">Adoption Fee</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in clnt.AdoptionEntries)
+                            {
+                                <tr>
+                                    @* Each row now has 20px extra padding *@
+                                    <td class="ps-4 fw-bold border-dark" style="padding-top: 20px; padding-bottom: 20px;">#@item.Pet.PetId</td>
+                                    <td class="text-uppercase fw-semibold border-dark text-primary" style="padding-top: 20px; padding-bottom: 20px;">@item.Pet.PetName</td>
+                                    <td class="text-uppercase fw-semibold border-dark text-primary" style="padding-top: 20px; padding-bottom: 20px;">@item.Pet.AdoptionFee</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    body {
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+    }
+    .border-2 {
+        border-width: 2px !important;
+    }
+    .table-bordered > :not(caption) > * > * {
+        border-width: 1px !important;
+        border-color: #000 !important;
+    }
+</style>

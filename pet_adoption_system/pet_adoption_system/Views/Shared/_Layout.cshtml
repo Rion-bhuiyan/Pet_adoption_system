@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Pet Haven</title>
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-primary bg-gradient shadow rounded-bottom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="~/Images/petlogo.jpg"
+                     style="width:40px; height:40px; border:1px solid black; transition: transform 0.2s ease;"
+                     onmouseover="this.style.transform='scale(2)';"
+                     onmouseout="this.style.transform='scale(1)';"
+                     alt="Logo" />
+            </a>
+            @Html.ActionLink("Pet Haven", "Index", "Home", new { area = "" },
+                new { @class = "navbar-brand fw-bold text-white fs-4" })
+
+            <button type="button" class="navbar-toggler"
+                    data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse d-lg-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item mx-1">
+                        @Html.ActionLink("Home", "Index", "Home", new { area = "" },
+                            new { @class = "nav-link fw-bold text-white rounded-pill px-3 py-2" })
+                    </li>
+                    <li class="nav-item mx-1">
+                        @Html.ActionLink("About", "Index", "About", new { area = "" },
+                            new { @class = "nav-link fw-bold text-white rounded-pill px-3 py-2" })
+                    </li>
+                    <li class="nav-item mx-1">
+                        @Html.ActionLink("Pets", "Index", "Pets", new { area = "" },
+                            new { @class = "nav-link fw-bold text-white rounded-pill px-3 py-2" })
+                    </li>
+                    <li class="nav-item mx-1">
+                        @Html.ActionLink("Adopter", "Index", "Adopters", new { area = "" },
+                            new { @class = "nav-link fw-bold text-white rounded-pill px-3 py-2" })
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center">
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content pt-4">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p class="text-center">© @DateTime.Now.Year -  Pet Haven – Because Every Pet Deserves a Happy Ending</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        $(document).on("click", "#btnPlus", function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var ptcntr = $("#PetContainer");
+            $.ajax({
+                url: "/Adopters/AddNewPet",
+                type: "Get",
+                success: function (data) {
+                    ptcntr.append(data);
+                }
+            });
+        });
+
+        $(document).on("click", ".btnDelete", function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).closest(".row").remove();
+        });
+    </script>
+
+</body>
+</html>

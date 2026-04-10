@@ -1,0 +1,94 @@
+﻿@model pet_adoption_system.Models.View_Model.AdopterVM
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class=".fs-5 alert alert-danger fw-bold shadow-sm">Are you sure you want to delete this adopter?</h2>
+
+            @using (Html.BeginForm("Delete", "Adopters", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="row mt-4">
+                    <div class="col-md-6 border-end">
+                        @Html.HiddenFor(x => x.AdopterId)
+                        @Html.HiddenFor(x => x.Picture)
+
+                        <div class="row mb-3">
+                            @Html.LabelFor(x => x.AdopterName, htmlAttributes: new { @class = "col-form-label col-md-3 fw-bold" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(x => x.AdopterName, new { @class = "form-control bg-light", @readonly = "readonly" })
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            @Html.LabelFor(x => x.BirthDate, htmlAttributes: new { @class = "col-form-label col-md-3 fw-bold" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(x => x.BirthDate, "{0:yyyy-MM-dd}", new { @class = "form-control bg-light", type = "date", @readonly = "readonly" })
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            @Html.LabelFor(x => x.Age, htmlAttributes: new { @class = "col-form-label col-md-3 fw-bold" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(x => x.Age, new { @class = "form-control bg-light", @readonly = "readonly" })
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            @Html.LabelFor(x => x.PictureFile, htmlAttributes: new { @class = "col-form-label col-md-3 fw-bold" })
+                            <div class="col-md-9">
+                                <div class="p-2 border rounded bg-light d-inline-block shadow-sm">
+                                    <img src="@Model.Picture" width="120" height="120" class="object-fit-cover rounded" alt="Adopter Image" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            @Html.LabelFor(x => x.Maritalstatus, htmlAttributes: new { @class = "col-form-label col-md-3 fw-bold" })
+                            <div class="col-md-9 d-flex align-items-center">
+                                @Html.CheckBoxFor(x => x.Maritalstatus, new { @onclick = "return false;", @class = "form-check-input me-2" })
+                                <label class="form-check-label fw-semibold">Married</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-9 offset-md-3">
+                                <a href="@Url.Action("Index", "Adopters")" class="btn btn-outline-secondary btn-lg px-4 ms-2">Cancel</a>
+                                <button type="submit" class="btn btn-danger btn-lg px-2 fw-bold shadow">
+                                    <i class="bi bi-trash-fill"></i> Confirm Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 ps-md-5">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="fw-bold text-secondary">Adopted Pet List</h3>
+                            <span class="badge bg-primary rounded-pill px-3 py-2">Read Only</span>
+                        </div>
+
+                        <div id="PetContainer" class="p-3 border rounded-3 bg-light shadow-inner" style="min-height: 200px;">
+                            @foreach (var item in Model.PetList)
+                            {
+                                @Html.Action("AddNewPet", "Adopters", new { id = item })
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Ensure UI consistency for delete page
+            $("#PetContainer select").attr("disabled", "disabled");
+            $("#PetContainer .btn-danger").hide();
+        });
+    </script>
+}
